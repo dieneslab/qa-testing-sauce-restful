@@ -1,0 +1,208 @@
+{
+  "info": {
+    "name": "Restful Booker API - QA Testing",
+    "description": "Collection para testes da API Restful Booker. Utilizada no projeto de QA Testing (UI + API).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "https://restful-booker.herokuapp.com", "type": "string" },
+    { "key": "token", "value": "", "type": "string" },
+    { "key": "booking_id", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "🔑 Autenticação",
+      "item": [
+        {
+          "name": "POST - Criar Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Token presente', () => {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json).to.have.property('token');",
+                  "  pm.collectionVariables.set('token', json.token);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\"username\":\"admin\",\"password\":\"password123\"}" },
+            "url": { "raw": "{{base_url}}/auth", "host": ["{{base_url}}"], "path": ["auth"] }
+          }
+        },
+        {
+          "name": "POST - Credenciais Inválidas",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\"username\":\"admin\",\"password\":\"wrong\"}" },
+            "url": { "raw": "{{base_url}}/auth", "host": ["{{base_url}}"], "path": ["auth"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "📋 Reservas (CRUD)",
+      "item": [
+        {
+          "name": "GET - Listar Reservas",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Response é array', () => pm.expect(pm.response.json()).to.be.an('array'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/booking", "host": ["{{base_url}}"], "path": ["booking"] }
+          }
+        },
+        {
+          "name": "POST - Criar Reserva",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const json = pm.response.json();",
+                  "pm.test('bookingid presente', () => pm.expect(json).to.have.property('bookingid'));",
+                  "pm.collectionVariables.set('booking_id', json.bookingid);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"firstname\":\"João\",\"lastname\":\"Silva\",\"totalprice\":350,\"depositpaid\":true,\"bookingdates\":{\"checkin\":\"2026-01-15\",\"checkout\":\"2026-01-20\"},\"additionalneeds\":\"Café da manhã\"}"
+            },
+            "url": { "raw": "{{base_url}}/booking", "host": ["{{base_url}}"], "path": ["booking"] }
+          }
+        },
+        {
+          "name": "GET - Buscar Reserva por ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/booking/{{booking_id}}", "host": ["{{base_url}}"], "path": ["booking", "{{booking_id}}"] }
+          }
+        },
+        {
+          "name": "PUT - Atualizar Reserva",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Cookie", "value": "token={{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"firstname\":\"Pedro\",\"lastname\":\"Almeida\",\"totalprice\":500,\"depositpaid\":false,\"bookingdates\":{\"checkin\":\"2026-02-01\",\"checkout\":\"2026-02-10\"},\"additionalneeds\":\"Jantar incluso\"}"
+            },
+            "url": { "raw": "{{base_url}}/booking/{{booking_id}}", "host": ["{{base_url}}"], "path": ["booking", "{{booking_id}}"] }
+          }
+        },
+        {
+          "name": "PATCH - Atualizar Parcialmente",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Cookie", "value": "token={{token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\"firstname\":\"Ana\",\"lastname\":\"Costa\"}" },
+            "url": { "raw": "{{base_url}}/booking/{{booking_id}}", "host": ["{{base_url}}"], "path": ["booking", "{{booking_id}}"] }
+          }
+        },
+        {
+          "name": "DELETE - Excluir Reserva",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Cookie", "value": "token={{token}}" }],
+            "url": { "raw": "{{base_url}}/booking/{{booking_id}}", "host": ["{{base_url}}"], "path": ["booking", "{{booking_id}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🔍 Filtros e Buscas",
+      "item": [
+        {
+          "name": "GET - Filtrar por Nome",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/booking?firstname=João&lastname=Silva",
+              "host": ["{{base_url}}"],
+              "path": ["booking"],
+              "query": [
+                { "key": "firstname", "value": "João" },
+                { "key": "lastname", "value": "Silva" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET - Filtrar por Data",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/booking?checkin=2026-01-15",
+              "host": ["{{base_url}}"],
+              "path": ["booking"],
+              "query": [{ "key": "checkin", "value": "2026-01-15" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "⚠️ Testes de Erro",
+      "item": [
+        {
+          "name": "POST - Sem firstname (Erro 500)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"lastname\":\"Silva\",\"totalprice\":350,\"depositpaid\":true,\"bookingdates\":{\"checkin\":\"2026-01-15\",\"checkout\":\"2026-01-20\"},\"additionalneeds\":\"Sem firstname\"}"
+            },
+            "url": { "raw": "{{base_url}}/booking", "host": ["{{base_url}}"], "path": ["booking"] }
+          }
+        },
+        {
+          "name": "GET - Reserva Inexistente (404)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/booking/999999", "host": ["{{base_url}}"], "path": ["booking", "999999"] }
+          }
+        },
+        {
+          "name": "DELETE - Sem Token (403)",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{base_url}}/booking/1", "host": ["{{base_url}}"], "path": ["booking", "1"] }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "name": "qa-testing-sauce-restful",
+  "version": "1.0.0",
+  "description": "Projeto de QA Testing - Sauce Demo (UI) + Restful Booker (API) com Playwright",
+  "scripts": {
+    "test:ui": "playwright test tests/ui/ --project=chromium",
+    "test:api": "playwright test tests/api/ --project=chromium",
+    "test:all": "playwright test --project=chromium",
+    "test:headed": "playwright test --headed --project=chromium",
+    "test:debug": "playwright test --debug --project=chromium",
+    "report": "playwright show-report",
+    "codegen": "playwright codegen https://www.saucedemo.com/"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.40.1",
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.2"
+  },
+  "dependencies": {
+    "@axe-core/playwright": "^4.11.3"
+  }
+}
