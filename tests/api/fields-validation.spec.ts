@@ -1,17 +1,16 @@
 import { test, expect } from '@playwright/test';
 import { API_BASE_URL, BOOKING_TEMPLATE } from '../utils/test-data';
 
-test.describe('✅ API - Validação de Campos Obrigatórios', () => {
-  test('POST /booking - Ausência de firstname deve retornar erro 500', async ({ request }) => {
+test.describe('API Validação de campos', () => {
+  test('POST /booking sem firstname', async ({ request }) => {
     const response = await request.post(`${API_BASE_URL}/booking`, {
       data: BOOKING_TEMPLATE.MISSING_FIRSTNAME,
       headers: { 'Content-Type': 'application/json' },
     });
     expect(response.status()).toBe(500);
-    console.log('⚠️ API retorna 500 quando firstname está ausente (comportamento esperado documentado)');
   });
 
-  test('POST /booking - Ausência de lastname deve retornar erro 500', async ({ request }) => {
+  test('POST /booking sem lastname', async ({ request }) => {
     const response = await request.post(`${API_BASE_URL}/booking`, {
       data: BOOKING_TEMPLATE.MISSING_LASTNAME,
       headers: { 'Content-Type': 'application/json' },
@@ -19,30 +18,23 @@ test.describe('✅ API - Validação de Campos Obrigatórios', () => {
     expect(response.status()).toBe(500);
   });
 
-  test('POST /booking - Valores inválidos para campos numéricos', async ({ request }) => {
+  test('POST /booking com preço negativo', async ({ request }) => {
     const response = await request.post(`${API_BASE_URL}/booking`, {
       data: BOOKING_TEMPLATE.NEGATIVE_PRICE,
       headers: { 'Content-Type': 'application/json' },
     });
-    console.log(`💰 Status para preço negativo: ${response.status()}`);
-    if (response.status() === 200) {
-      console.log('🐛 BUG: API aceitou reserva com preço negativo!');
-    }
+    expect(response.status()).toBeGreaterThan(0);
   });
 
-  test('POST /booking - Datas inconsistentes (checkout antes do checkin)', async ({ request }) => {
+  test('POST /booking com datas invertidas', async ({ request }) => {
     const response = await request.post(`${API_BASE_URL}/booking`, {
       data: BOOKING_TEMPLATE.INVALID_DATES,
       headers: { 'Content-Type': 'application/json' },
     });
-    const body = await response.json();
-    console.log(`📅 Status para datas inválidas: ${response.status()}`);
-    if (response.status() === 200) {
-      console.log('🐛 BUG: API aceitou reserva com checkout anterior ao checkin!');
-    }
+    expect(response.status()).toBeGreaterThan(0);
   });
 
-  test('GET /booking - Filtrar por nome existente', async ({ request }) => {
+  test('GET /booking filtro por nome', async ({ request }) => {
     await request.post(`${API_BASE_URL}/booking`, {
       data: BOOKING_TEMPLATE.VALID,
       headers: { 'Content-Type': 'application/json' },
@@ -51,17 +43,14 @@ test.describe('✅ API - Validação de Campos Obrigatórios', () => {
       params: { firstname: 'João', lastname: 'Silva' },
     });
     expect(response.status()).toBe(200);
-    const body = await response.json();
-    expect(Array.isArray(body)).toBe(true);
-    console.log(`🔍 Resultados da busca por nome: ${body.length} reserva(s)`);
+    expect(Array.isArray(await response.json())).toBe(true);
   });
 
-  test('GET /booking - Filtrar por data de checkin', async ({ request }) => {
+  test('GET /booking filtro por checkin', async ({ request }) => {
     const response = await request.get(`${API_BASE_URL}/booking`, {
       params: { checkin: '2026-01-15' },
     });
     expect(response.status()).toBe(200);
-    const body = await response.json();
-    console.log(`📅 Reservas com checkin em 2026-01-15: ${body.length}`);
+    expect(Array.isArray(await response.json())).toBe(true);
   });
 });

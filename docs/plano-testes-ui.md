@@ -1,52 +1,72 @@
-# 📋 Plano de Testes - Sauce Demo (UI Testing)
+# Plano de testes — Sauce Demo (UI)
 
 ## 1. Escopo
-Testar a plataforma de e-commerce Sauce Demo, cobrindo funcionalidades críticas de autenticação, catálogo, carrinho e checkout.
 
-### 1.1 Funcionalidades no Escopo
-- Login/logout com diferentes perfis de usuário
-- Ordenação e filtragem de produtos
-- Fluxo completo de checkout
-- Gestão do carrinho (adicionar/remover)
-- Navegação entre páginas
+Testar a plataforma [Sauce Demo](https://www.saucedemo.com/), cobrindo autenticação, catálogo, carrinho, checkout e navegação.
 
-### 1.2 Fora do Escopo
-- Testes de integração com gateway de pagamento (simulado)
-- Testes com múltiplas abas simultâneas
-- Testes de internacionalização
+### 1.1 No escopo
 
-## 2. Estratégia de Teste
+- Login/logout e mensagens de erro de autenticação
+- Ordenação de produtos (nome e preço)
+- Carrinho (adicionar, remover, navegação)
+- Checkout (fluxo feliz e validações de campos)
+- Navegação (menu, logo, carrinho)
+- Responsividade (vários viewports)
+- Acessibilidade (axe-core)
 
-### 2.1 Níveis de Teste
-| Nível | Descrição | Status |
-|-------|-----------|--------|
-| Nível 1 | Funcionalidades obrigatórias | ✅ Implementado |
-| Nível 2 | Responsividade, acessibilidade | ✅ Implementado |
+### 1.2 Fora do escopo
 
-### 2.2 Tipos de Teste
-- **Funcional**: Validação de fluxos principais
-- **Exploratório**: Busca de bugs em cenários edge-case
-- **Responsividade**: Diferentes viewports
-- **Acessibilidade**: Análise com axe-core
+- Pagamento real (simulado no demo)
+- Múltiplas abas simultâneas
+- Internacionalização
+- Automação dedicada para `problem_user`, `error_user` e `visual_user` (ver seção 4)
 
-### 2.3 Ambiente de Teste
-- **URL**: https://www.saucedemo.com/
-- **Navegadores**: Chromium (desktop + mobile)
-- **Dados**: Usuários pré-cadastrados fornecidos pela plataforma
+## 2. Estratégia
 
-## 3. Cobertura de Usuários
+### 2.1 Níveis
 
-| Usuário | Funcionalidades testadas |
-|---------|-------------------------|
-| `standard_user` | Fluxo completo, ordenação, checkout |
-| `locked_out_user` | Validação de bloqueio |
-| `performance_glitch_user` | Tempo de resposta |
-| `problem_user` | Comportamento anômalo |
-| `error_user` | Tratamento de erros |
-| `visual_user` | Layout |
+| Nível | Conteúdo | Specs |
+|-------|----------|-------|
+| 1 | Login, produtos, carrinho, checkout, navegação | `login`, `products-filters`, `cart-management`, `checkout-flow`, `navigation` |
+| 2 | Responsividade, acessibilidade | `responsiveness`, `accessibility` |
 
-## 4. Cronograma
-- Planejamento e setup: ✅ Concluído
-- Implementação Nível 1: ✅ Concluído
-- Implementação Nível 2: ✅ Concluído
-- Documentação e evidências: ✅ Concluído
+### 2.2 Tipos de teste
+
+- **Funcional**: fluxos principais (Playwright)
+- **Responsividade**: viewports + screenshots em `evidencias/`
+- **Acessibilidade**: análise axe-core nas páginas login, inventário e carrinho
+
+### 2.3 Ambiente
+
+| Item | Valor |
+|------|-------|
+| URL | https://www.saucedemo.com/ |
+| Navegador (padrão nos scripts npm) | Chromium |
+| Projetos no `playwright.config.ts` | `chromium` (desktop), `mobile` (iPhone 12) |
+| Dados | Usuários pré-cadastrados do demo |
+
+## 3. Cobertura de usuários
+
+| Usuário | Automação | Onde |
+|---------|-----------|------|
+| `standard_user` | Sim | Fluxo principal em todos os specs de UI |
+| `locked_out_user` | Sim | `login.spec.ts` → `locked_out_user` |
+| `performance_glitch_user` | Sim | `login.spec.ts` → `performance_glitch_user` |
+| `problem_user` | Não | Apenas `test-data.ts`; teste manual/exploratório |
+| `error_user` | Não | Apenas `test-data.ts` |
+| `visual_user` | Não | Apenas `test-data.ts` |
+
+## 4. Rastreabilidade
+
+- Casos detalhados e IDs: [`casos-teste-ui.md`](casos-teste-ui.md)
+- Bugs conhecidos: [`analise-bugs-ui.md`](analise-bugs-ui.md)
+- Melhorias sugeridas: [`melhorias-ui.md`](melhorias-ui.md)
+
+## 5. Status do plano
+
+| Fase | Status |
+|------|--------|
+| Planejamento e setup | Concluído |
+| Nível 1 (funcional) | Concluído |
+| Nível 2 (responsividade e acessibilidade) | Concluído |
+| Documentação alinhada aos specs | Concluído |

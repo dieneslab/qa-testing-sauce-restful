@@ -1,4 +1,4 @@
-# 📡 Documentação da API - Restful Booker
+# Documentação da API — Restful Booker
 
 ## 1. Visão geral
 
@@ -350,8 +350,25 @@ GET {{base_url}}/booking?firstname=João&lastname=Silva
 ### 8.4 Busca e filtros
 
 - `GET /booking` — listar todas.
-- `GET /booking?firstname=João` — filtrar por nome.
+- `GET /booking?firstname=João&lastname=Silva` — filtrar por nome.
 - `GET /booking?checkin=2026-01-15` — filtrar por data.
+
+### 8.5 Rastreabilidade com os specs Playwright
+
+| Spec | Describe | Testes automatizados |
+|------|----------|----------------------|
+| `tests/api/auth.spec.ts` | API Auth | `POST /auth - credenciais válidas`, `senha incorreta`, `campos vazios` |
+| `tests/api/bookings-crud.spec.ts` | API Bookings CRUD | `GET /booking`, `POST /booking`, `GET/PUT/PATCH/DELETE /booking/{id}`, `GET após delete`, `DELETE sem token` |
+| `tests/api/fields-validation.spec.ts` | API Validação de campos | sem `firstname`, sem `lastname`, preço negativo, datas invertidas, filtros por nome e checkin |
+| `tests/api/performance.spec.ts` | API Performance | `GET /booking`, `POST /booking`, `POST /auth`, `10 GETs consecutivos` (limite 2s) |
+| `tests/api/security.spec.ts` | API Segurança | `DELETE` sem token e com token inválido, SQL injection, XSS, headers, rate limiting |
+
+**Cenários documentados acima, mas sem spec dedicado hoje**
+
+- `POST /booking` sem `totalprice` ou sem `bookingdates` (comportamento esperado 500 — apenas na collection Postman / teste manual).
+- Validação estrita de headers ausentes (o spec apenas executa a requisição; não falha por CSP/HSTS ausentes).
+
+Payloads de exemplo nos testes: `tests/utils/test-data.ts` (`BOOKING_TEMPLATE`).
 
 ## 9. Variáveis de ambiente (Postman)
 

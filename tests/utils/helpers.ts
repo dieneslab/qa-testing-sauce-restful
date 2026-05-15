@@ -38,9 +38,3 @@ export async function fillCheckoutInfo(page: Page, firstName: string, lastName: 
   await page.fill('[data-test="postalCode"]', zipCode);
   await page.click('[data-test="continue"]');
 }
-
-export async function measureResponseTime<T>(fn: () => Promise<T>): Promise<{ result: T; timeMs: number }> {
-  const start = Date.now();
-  const result = await fn();
-  return { result, timeMs: Date.now() - start };
-}

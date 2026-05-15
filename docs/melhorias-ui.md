@@ -1,21 +1,31 @@
-# 💡 Sugestões de Melhorias - Sauce Demo
+# Sugestões de melhorias — Sauce Demo
 
-## 1. Mensagens de Erro Mais Descritivas
-**Problema**: Mensagem "Username and password do not match" não distingue usuário inexistente de senha incorreta.
-**Sugestão**: Diferenciar mensagens ou adicionar código de erro específico.
+## 1. Mensagens de erro de login
 
-## 2. Validação em Tempo Real
-**Problema**: Campos do checkout só validam ao submeter.
-**Sugestão**: Adicionar validação on-blur com feedback instantâneo.
+**Problema:** "Username and password do not match" não diferencia usuário inexistente de senha incorreta.
+
+**Sugestão:** mensagens ou códigos distintos por causa (sem expor se o usuário existe, se for requisito de segurança).
+
+## 2. Validação do checkout
+
+**Problema:** campos só validam ao clicar em Continue.
+
+**Sugestão:** validação on-blur com feedback imediato.
 
 ## 3. Acessibilidade
-**Problema**: Violações de contraste e falta de labels ARIA em alguns elementos.
-**Sugestão**: Implementar correções identificadas pelo axe-core (contraste de cores, focus indicators).
 
-## 4. Persistência do Carrinho
-**Problema**: Carrinho limpa ao fazer logout.
-**Sugestão**: Avaliar sessionStorage para manter carrinho durante a sessão.
+**Problema:** violações de contraste e labels ARIA incompletos (identificados pelo axe-core).
 
-## 5. Indicador de Carregamento
-**Problema**: performance_glitch_user não mostra feedback de loading.
-**Sugestão**: Adicionar skeleton loading ou spinner durante operações lentas.
+**Sugestão:** corrigir contraste e indicadores de foco; ver `tests/ui/accessibility.spec.ts`.
+
+## 4. Persistência do carrinho
+
+**Problema:** carrinho zera no logout.
+
+**Sugestão:** avaliar `sessionStorage` para manter itens na mesma sessão do navegador.
+
+## 5. Feedback de carregamento
+
+**Problema:** `performance_glitch_user` demora sem indicador visual.
+
+**Sugestão:** spinner ou skeleton durante operações lentas.

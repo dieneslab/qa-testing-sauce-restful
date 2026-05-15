@@ -1,35 +1,29 @@
-# ⚠️ Análise de Riscos
+# Análise de riscos
 
-## Riscos Identificados
-
-| Risco | Probabilidade | Impacto | Mitigação |
-|-------|--------------|---------|-----------|
-| API sem rate limiting adequado | Alta | Médio | Implementar throttling no servidor |
-| Injeção de SQL aceita pela API | Média | Crítico | Sanitizar inputs, usar prepared statements |
-| XSS refletido nos campos de nome | Média | Alto | Escapar HTML nas respostas da API |
-| Falta de HTTPS enforcement | Baixa | Crítico | Forçar HSTS em toda a comunicação |
-| Carrinho compartilhado entre usuários | Baixa | Baixo | Garantir isolamento por sessão/token |
-| Dados mockados se perderem | Baixa | Médio | Backup periódico ou seed automático |
-
-## Recomendações para Produção
-1. **Autenticação**: Migrar de Basic Auth + Cookie para JWT com expiração
-2. **Validação**: Implementar schema validation (JSON Schema) em todas as rotas
-3. **Monitoramento**: Adicionar logging estruturado e alertas para erros 5xx
-4. **Testes Automatizados**: Integrar com CI/CD (GitHub Actions, Jenkins)# ⚠️ Análise de Riscos
-
-## Riscos Identificados
+## Riscos identificados
 
 | Risco | Probabilidade | Impacto | Mitigação |
-|-------|--------------|---------|-----------|
-| API sem rate limiting adequado | Alta | Médio | Implementar throttling no servidor |
-| Injeção de SQL aceita pela API | Média | Crítico | Sanitizar inputs, usar prepared statements |
-| XSS refletido nos campos de nome | Média | Alto | Escapar HTML nas respostas da API |
-| Falta de HTTPS enforcement | Baixa | Crítico | Forçar HSTS em toda a comunicação |
-| Carrinho compartilhado entre usuários | Baixa | Baixo | Garantir isolamento por sessão/token |
-| Dados mockados se perderem | Baixa | Médio | Backup periódico ou seed automático |
+|-------|---------------|---------|-----------|
+| API sem rate limiting adequado | Alta | Médio | Throttling no servidor |
+| Injeção de SQL aceita pela API | Média | Crítico | Sanitizar inputs; prepared statements |
+| XSS nos campos de nome | Média | Alto | Escapar HTML nas respostas |
+| Falta de HTTPS enforcement | Baixa | Crítico | HSTS em toda a comunicação |
+| Carrinho compartilhado entre usuários | Baixa | Baixo | Isolamento por sessão/token |
+| Perda de dados mockados | Baixa | Médio | Backup ou seed automático |
 
-## Recomendações para Produção
-1. **Autenticação**: Migrar de Basic Auth + Cookie para JWT com expiração
-2. **Validação**: Implementar schema validation (JSON Schema) em todas as rotas
-3. **Monitoramento**: Adicionar logging estruturado e alertas para erros 5xx
-4. **Testes Automatizados**: Integrar com CI/CD (GitHub Actions, Jenkins)
+## Recomendações para produção
+
+1. **Autenticação**: avaliar JWT com expiração em vez de cookie sem TTL explícito.
+2. **Validação**: JSON Schema (ou equivalente) em todas as rotas.
+3. **Monitoramento**: logging estruturado e alertas para 5xx.
+4. **CI/CD**: integrar `npm run test:all` em pipeline (GitHub Actions, Jenkins, etc.).
+
+## Relação com os testes automatizados
+
+| Risco | Cobertura atual |
+|-------|-----------------|
+| Rate limiting | `tests/api/security.spec.ts` → `rate limiting` (20 GETs; não exige 429) |
+| SQL injection | `security.spec.ts` → `SQL injection no firstname` |
+| XSS | `security.spec.ts` → `XSS no firstname` |
+| Headers de segurança | `security.spec.ts` → `headers de segurança` |
+| Carrinho entre usuários | Não automatizado (UI demo; sessão por navegador) |

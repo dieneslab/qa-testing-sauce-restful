@@ -199,11 +199,13 @@ npm run report
 | Arquivo | Conteúdo |
 |---------|----------|
 | [`docs/plano-testes-ui.md`](docs/plano-testes-ui.md) | Plano de testes UI |
-| [`docs/casos-teste-ui.md`](docs/casos-teste-ui.md) | Casos de teste UI |
-| [`docs/analise-bugs-ui.md`](docs/analise-bugs-ui.md) | Análise de bugs UI |
+| [`docs/casos-teste-ui.md`](docs/casos-teste-ui.md) | Casos de teste UI + vínculo com cada `*.spec.ts` |
+| [`docs/analise-bugs-ui.md`](docs/analise-bugs-ui.md) | Bugs conhecidos (UI e API) |
 | [`docs/melhorias-ui.md`](docs/melhorias-ui.md) | Sugestões de melhorias |
 | [`docs/analise-riscos.md`](docs/analise-riscos.md) | Análise de riscos |
-| [`docs/documentacao-api.md`](docs/documentacao-api.md) | Documentação da API |
+| [`docs/documentacao-api.md`](docs/documentacao-api.md) | Manual da API + rastreabilidade dos specs |
+
+Os arquivos em `docs/` foram alinhados aos nomes atuais dos testes em `tests/` (sem emojis nos títulos dos specs). Usuários `problem_user`, `error_user` e `visual_user` constam em `test-data.ts`, mas não possuem automação dedicada — ver plano e casos de teste.
 
 ---
 

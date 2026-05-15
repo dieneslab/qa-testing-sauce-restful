@@ -1,38 +1,30 @@
-// ===== SAUCE DEMO - DADOS DE USUÁRIOS =====
 export const USERS = {
   STANDARD: {
     username: 'standard_user',
     password: 'secret_sauce',
-    description: 'Usuário padrão - acesso completo e funcional',
   },
   LOCKED_OUT: {
     username: 'locked_out_user',
     password: 'secret_sauce',
-    description: 'Usuário bloqueado - não consegue acessar',
   },
   PROBLEM: {
     username: 'problem_user',
     password: 'secret_sauce',
-    description: 'Usuário problemático - imagens trocadas e bugs',
   },
   GLITCH: {
     username: 'performance_glitch_user',
     password: 'secret_sauce',
-    description: 'Usuário com lentidão - performance degradada',
   },
   ERROR: {
     username: 'error_user',
     password: 'secret_sauce',
-    description: 'Usuário com erros - múltiplos bugs de interface',
   },
   VISUAL: {
     username: 'visual_user',
     password: 'secret_sauce',
-    description: 'Usuário visual - problemas de layout/estilo',
   },
 } as const;
 
-// ===== SAUCE DEMO - PRODUTOS =====
 export const PRODUCTS = {
   BACKPACK: 'Sauce Labs Backpack',
   BIKE_LIGHT: 'Sauce Labs Bike Light',
@@ -42,7 +34,6 @@ export const PRODUCTS = {
   RED_T_SHIRT: 'Test.allTheThings() T-Shirt (Red)',
 } as const;
 
-// Ordenações disponíveis
 export const SORT_OPTIONS = {
   AZ: 'az',
   ZA: 'za',
@@ -50,7 +41,6 @@ export const SORT_OPTIONS = {
   HI_LO: 'hilo',
 } as const;
 
-// Mensagens de erro esperadas
 export const ERROR_MESSAGES = {
   LOCKED_OUT: 'Epic sadface: Sorry, this user has been locked out.',
   INVALID_LOGIN: 'Epic sadface: Username and password do not match any user in this service',
@@ -58,7 +48,6 @@ export const ERROR_MESSAGES = {
   EMPTY_PASSWORD: 'Epic sadface: Password is required',
 } as const;
 
-// ===== RESTFUL BOOKER - DADOS =====
 export const API_BASE_URL = 'https://restful-booker.herokuapp.com';
 
 export const BOOKING_TEMPLATE = {
