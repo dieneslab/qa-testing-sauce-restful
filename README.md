@@ -1,6 +1,6 @@
 # QA Testing — Sauce Demo + Restful Booker
 
-Projeto de testes automatizados para avaliação prática de QA: **UI** com [Playwright](https://playwright.dev/) no [Sauce Demo](https://www.saucedemo.com/) e **API** na [Restful Booker](https://restful-booker.herokuapp.com/apidoc/index.html).
+Projeto de testes automatizados para demonstração prática de QA: **UI** com [Playwright](https://playwright.dev/) no [Sauce Demo](https://www.saucedemo.com/) e **API** na [Restful Booker](https://restful-booker.herokuapp.com/apidoc/index.html).
 
 ---
 
@@ -211,6 +211,6 @@ Os arquivos em `docs/` foram alinhados aos nomes atuais dos testes em `tests/` (
 
 ## Autor e licença
 
-**Autor:** Candidato QA — teste prático  
+**Autor:** Dienes Stein 
 
-**Licença:** Projeto desenvolvido para fins de **avaliação técnica**; uso restrito ao contexto da avaliação, salvo outra definição explícita pelo autor.
+**Licença:** Projeto desenvolvido para fins de **demonstração técnica**; uso restrito pessoal, salvo outra definição explícita pelo autor.
